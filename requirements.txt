@@ -1,0 +1,16 @@
+# main modules
+Django>4.2,<4.3
+django-debug-toolbar==4.2.0
+pillow
+requests
+
+
+# seo
+django-robots
+
+# api
+djangorestframework
+markdown
+django-filter
+djangorestframework-simplejwt
+django-cors-headers
