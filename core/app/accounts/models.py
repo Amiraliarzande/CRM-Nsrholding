@@ -3,7 +3,7 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 
-from accounts.validators import validate_iranian_cellphone_number
+from app.accounts.validators import validate_iranian_cellphone_number
 
 
 class UserType(models.IntegerChoices):

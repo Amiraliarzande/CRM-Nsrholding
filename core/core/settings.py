@@ -39,8 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     # created apps
-    'accounts',
-    'crm',
+    'app.accounts',
+    'app.crm',
+    'app.website',
     # rest api apps
     'rest_framework',
     "django_filters",
