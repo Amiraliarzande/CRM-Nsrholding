@@ -90,7 +90,297 @@ class CallReport (models.Model):
 
     def __str__(self):
         return f"{self.number or 'No Number'} - {self.name or 'Unnamed'}"
+################################################################################
+
+class PurchaseProcess(models.Model):
+
+    class LoadType(models.TextChoices):
+        MARKET_PLACE = 'market_place', _("MarketPlace")
+        MARKET_OUTSIDE = 'market_outside', _("MarketOutside")
+        QUOTA = 'quota', _("Quota")
+        OVERHEAD = 'overhead', _("Overhead")
+
+    class MarketPlaceType(models.TextChoices):
+        AGREEMENT = 'agreement', _("Agreement")
+        CASH = 'cash', _("Cash")
+
+    load_type = models.CharField(
+        max_length=20,
+        choices=LoadType.choices,
+        default=LoadType.MARKET_PLACE,
+        verbose_name=_("Purchase type")
+    )
+
+    call_report = models.OneToOneField(
+        'CallReport',
+        on_delete=models.CASCADE,
+        related_name='purchase_process',
+        verbose_name=_("Call Report")
+    )
+
+    market_place_type = models.CharField(
+        max_length=20,
+        choices=MarketPlaceType.choices,
+        blank=True,
+        null=True,
+        verbose_name=_("MarketPlace Type")
+    )
+
+    # --------------------------
+    # MARKET OUTSIDE Fields
+    # --------------------------
+    yekta_code = models.CharField(max_length=100, verbose_name=_("Yekta Code"), blank=True, null=True)
+    market_outside_address = models.CharField(max_length=255, verbose_name=_("Market Outside Address"), blank=True, null=True)
+    postal_code = models.CharField(max_length=20, verbose_name=_("Postal Code"), blank=True, null=True)
+    market_outside_number = models.CharField(max_length=50, verbose_name=_("Market Outside Number"), blank=True, null=True)
+    buyer_name = models.CharField(max_length=100, verbose_name=_("Buyer Name"), blank=True, null=True)
+
+    # --------------------------
+    # OVERHEAD Fields
+    # --------------------------
+    overhead_address = models.CharField(max_length=255, verbose_name=_("Overhead Address"), blank=True, null=True)
+    overhead_number = models.CharField(max_length=50, verbose_name=_("Overhead Number"), blank=True, null=True)
+
+    # --------------------------
+    # MARKET PLACE Fields
+    # --------------------------
+    agreement_kotazh = models.CharField(max_length=100, verbose_name=_("Agreement Kotazh"), blank=True, null=True)
+
+    cash_user = models.CharField(max_length=100, verbose_name=_("Cash User"), blank=True, null=True)
+    cash_password = models.CharField(max_length=100, verbose_name=_("Cash Password"), blank=True, null=True)
+    cash_kotazh = models.CharField(max_length=100, verbose_name=_("Cash Kotazh"), blank=True, null=True)
+
+    # --------------------------
+    # QUOTA Fields
+    # --------------------------
+    destination_name = models.CharField(max_length=150, verbose_name=_("Destination Name"), blank=True, null=True)
+    quota_number = models.CharField(max_length=50, verbose_name=_("Quota Number"), blank=True, null=True)
+
+    # --------------------------
+    # SYSTEM Fields
+    # --------------------------
+    created_at = jmodels.jDateField(auto_now_add=True, verbose_name=_("Created At"),blank=True,null=True)
+    updated_at = jmodels.jDateField(auto_now=True, verbose_name=_("Updated At"),blank=True,null=True)
+
+    class Meta:
+        verbose_name = _("Purchase Process")
+        verbose_name_plural = _("Purchase Processes")
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        base_name = getattr(self.call_report, "name", None) or "Unknown"
+        if self.load_type == self.LoadType.MARKET_PLACE:
+            return f"{base_name} - MarketPlace ({self.market_place_type or 'Unknown'})"
+        elif self.load_type == self.LoadType.MARKET_OUTSIDE:
+            return f"{base_name} - {self.buyer_name or 'Outside Buyer'}"
+        elif self.load_type == self.LoadType.QUOTA:
+            return f"{base_name} - Quota ({self.destination_name or 'Unknown'})"
+        elif self.load_type == self.LoadType.OVERHEAD:
+            return f"{base_name} - Overhead"
+        return base_name
+
+###################################################################################
+# ─────────────────────────────
+#  MAIN MODEL
+# ─────────────────────────────
+class SaleReport(models.Model):
+    class SaleType(models.TextChoices):
+        MARKET_PLACE = 'market_place', _("MarketPlace")
+        MARKET_OUTSIDE = 'market_outside', _("MarketOutside")
+        QUOTA = 'quota', _("Quota")
+        OVERHEAD = 'overhead', _("Overhead")
+
+    purchase_process = models.OneToOneField(
+        PurchaseProcess,
+        on_delete=models.CASCADE,
+        related_name='sale_report',
+        verbose_name=_("Purchase Process")
+    )
+
+    sale_type = models.CharField(
+        max_length=20,
+        choices=SaleType.choices,
+        verbose_name=_("Sale Type")
+    )
+
+    sale_date = jmodels.jDateField(verbose_name=_("Sale Date"), blank=True, null=True)
+
+    class Meta:
+        verbose_name = _("Sale Report")
+        verbose_name_plural = _("Sale Reports")
+        ordering = ['-sale_date']
+
+    def __str__(self):
+        return f"{self.purchase_process.call_report.name if hasattr(self.purchase_process, 'call_report') else 'Unknown'} - {self.get_sale_type_display()}"
     
+# ForeignKey SupplyStatus
+class SupplyStatus (models.Model):
+    name = models.CharField(max_length=100, verbose_name=_("Supply Status"))
+    parent = models.ForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='children',
+        verbose_name=_("Parent Supply Status")
+    )
+
+    class Meta:
+        verbose_name = _("Supply Status Level")
+        verbose_name_plural = _("Supply Status Levels")
+        ordering = ['name']
+
+    def __str__(self):
+        return f"{self.parent.name} > {self.name}" if self.parent else self.name
+    
+# ForeignKey MarketPlace
+class MarketPlace(models.Model):
+    sale_report = models.OneToOneField(
+        SaleReport,
+        on_delete=models.CASCADE,
+        related_name='marketplace',
+        verbose_name=_("Sale Report")
+    )
+
+    product_name = models.CharField(max_length=100, verbose_name=_("Product Name"), blank=True, null=True)
+    weight = models.IntegerField(verbose_name=_("Weight"), blank=True, null=True)
+    market_price = models.IntegerField(verbose_name=_("Market Price"), blank=True, null=True)
+    purchase_price = models.IntegerField(verbose_name=_("Purchase Price"), blank=True, null=True)
+    selling_price = models.IntegerField(verbose_name=_("Selling Price"), blank=True, null=True)
+    profit = models.DecimalField(max_digits=15, decimal_places=2,verbose_name=_("Profit"), blank=True, null=True)
+    unofficial = models.DecimalField(max_digits=15, decimal_places=2,verbose_name=_("Unofficial"), blank=True, null=True)
+    total_amount = models.DecimalField(max_digits=15, decimal_places=2,verbose_name=_("Total Amount"), blank=True, null=True)
+    deposit = models.IntegerField(verbose_name=_("Deposit"), blank=True, null=True)
+    account_remaining = models.DecimalField(max_digits=15, decimal_places=2,verbose_name=_("Account Remaining"), blank=True, null=True)
+    
+    buyer = models.BooleanField(default=False, verbose_name=_("Buyer"))
+    seller = models.BooleanField(default=False, verbose_name=_("Seller"))
+    supplier = models.BooleanField(default=False, verbose_name=_("Supplier"))
+
+    supply_status = models.ForeignKey(
+        SupplyStatus,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name=_("MarketPlace Supply Status Level")
+    )
+
+    sales_expert_name = models.CharField(max_length=100, verbose_name=_("Sales Expert Name"), blank=True, null=True)
+    description = models.TextField(verbose_name=_("Description"), blank=True, null=True)
+    weight_barname = models.IntegerField(verbose_name=_("Weight Barname"), blank=True, null=True)
+
+    class Meta:
+        verbose_name = _("MarketPlace Sale")
+        verbose_name_plural = _("MarketPlace Sales")
+        ordering = ['-id']
+
+    def __str__(self):
+        return f"{self.product_name or 'Unnamed Product'} ({self.selling_price or 0} Rls)"
+
+
+class MarketOutside(models.Model):
+    sale_report = models.OneToOneField(
+        SaleReport,
+        on_delete=models.CASCADE,
+        related_name='marketoutside',
+        verbose_name=_("Sale Report")
+    )
+
+    product_name = models.CharField(max_length=100, verbose_name=_("Product Name"), blank=True, null=True)
+    weight = models.IntegerField(verbose_name=_("Weight"), blank=True, null=True)
+    purchase_price = models.IntegerField(verbose_name=_("Purchase Price"), blank=True, null=True)
+    selling_price = models.IntegerField(verbose_name=_("Selling Price"), blank=True, null=True)
+    profit = models.DecimalField(max_digits=15, decimal_places=2,verbose_name=_("Profit"), blank=True, null=True)
+    total_amount = models.DecimalField(max_digits=15, decimal_places=2,verbose_name=_("Total Amount"), blank=True, null=True)
+    deposit = models.IntegerField(verbose_name=_("Deposit"), blank=True, null=True)
+    account_remaining = models.DecimalField(max_digits=15, decimal_places=2,verbose_name=_("Account Remaining"), blank=True, null=True)
+    
+    buyer = models.BooleanField(default=False, verbose_name=_("Buyer"))
+    seller = models.BooleanField(default=False, verbose_name=_("Seller"))
+    supplier = models.BooleanField(default=False, verbose_name=_("Supplier"))
+
+    supply_status = models.ForeignKey(
+        SupplyStatus,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name=_("MarketOutside Supply Status Level")
+    )
+
+    sales_expert_name = models.CharField(max_length=100, verbose_name=_("Sales Expert Name"), blank=True, null=True)
+    description = models.TextField(verbose_name=_("Description"), blank=True, null=True)
+    weight_barname = models.IntegerField(verbose_name=_("Weight Barname"), blank=True, null=True)
+
+    class Meta:
+        verbose_name = _("Market Outside Sale")
+        verbose_name_plural = _("Market Outside Sales")
+        ordering = ['-id']
+
+    def __str__(self):
+        return f"{self.product_name or 'Unnamed Product'} ({self.selling_price or 0} Rls)"
+
+class Quota(models.Model):
+    sale_report = models.OneToOneField(
+        SaleReport,
+        on_delete=models.CASCADE,
+        related_name='quota',
+        verbose_name=_("Sale Report")
+    )
+
+    product_name = models.CharField(max_length=100, verbose_name=_("Product Name"), blank=True, null=True)
+    weight = models.IntegerField(verbose_name=_("Weight"), blank=True, null=True)
+    purchase_price = models.IntegerField(verbose_name=_("Purchase Price"), blank=True, null=True)
+    selling_price = models.IntegerField(verbose_name=_("Selling Price"), blank=True, null=True)
+    profit = models.DecimalField(max_digits=15, decimal_places=2,verbose_name=_("Profit"), blank=True, null=True)
+    total_amount = models.DecimalField(max_digits=15, decimal_places=2,verbose_name=_("Total Amount"), blank=True, null=True)
+    deposit = models.IntegerField(verbose_name=_("Deposit"), blank=True, null=True)
+    account_remaining = models.DecimalField(max_digits=15, decimal_places=2,verbose_name=_("Account Remaining"), blank=True, null=True)
+    
+    buyer = models.BooleanField(default=False, verbose_name=_("Buyer"))
+    seller = models.BooleanField(default=False, verbose_name=_("Seller"))
+    supplier = models.BooleanField(default=False, verbose_name=_("Supplier"))
+
+    supply_status = models.ForeignKey(
+        SupplyStatus,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name=_("Quota Supply Status Level")
+    )
+
+    sales_expert_name = models.CharField(max_length=100, verbose_name=_("Sales Expert Name"), blank=True, null=True)
+    description = models.TextField(verbose_name=_("Description"), blank=True, null=True)
+
+    class Meta:
+        verbose_name = _("Quota Sale")
+        verbose_name_plural = _("Quota Sales")
+        ordering = ['-id']
+
+    def __str__(self):
+        return f"{self.product_name or 'Unnamed Product'} ({self.selling_price or 0} Rls)"
+
+class Overhead(models.Model):
+    sale_report = models.OneToOneField(
+        SaleReport,
+        on_delete=models.CASCADE,
+        related_name='overhead',
+        verbose_name=_("Sale Report")
+    )
+
+    address = models.CharField(max_length=100, verbose_name=_("Address"), blank=True, null=True)
+    number = models.IntegerField(verbose_name=_("Number"), blank=True, null=True)
+
+    class Meta:
+        verbose_name = _("Overhead Sale")
+        verbose_name_plural = _("Overhead Sales")
+        ordering = ['-id']
+
+    def __str__(self):
+        return f"{self.address or 'Unknown Address'} ({self.number or 'No Number'})"
+
+
+
+
 ####################################################################################
 # All Model Cargo Announcement
 
@@ -176,8 +466,28 @@ class LoadingTime (models.Model):
         if self.parent:
             return f"{self.parent.name} > {self.name}"
         return self.name
-
     
+class TransactionType (models.Model):
+    name = models.CharField(max_length=100, verbose_name=_("Transaction Type"))
+    parent = models.ForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='children',
+        verbose_name=_("Transaction Type")
+    )
+
+    class Meta:
+        verbose_name = _("Transaction Type Level")
+        verbose_name_plural = _("Transaction Type Levels")
+
+    def __str__(self):
+        if self.parent:
+            return f"{self.parent.name} > {self.name}"
+        return self.name
+
+
 # Original Model Cargo Announcement
 class CargoAnnouncement (models.Model):
 
@@ -192,14 +502,17 @@ class CargoAnnouncement (models.Model):
         verbose_name=_("Load Type")
     )
 
+    
     full_name = models.CharField(max_length=100, verbose_name=_("full name"), blank=True, null=True)
     number = models.IntegerField(verbose_name=_("number"), blank=True, null=True)
+
 
     name_company = models.CharField (max_length=100, verbose_name=_("name company"), blank=True, null=True)
     name_ceo =  models.CharField (max_length=100, verbose_name=_("name ceo"), blank=True, null=True)
     number_ceo = models.CharField (max_length=100, verbose_name=_("number ceo"), blank=True, null=True)
 
 
+    sales_expert_name = models.CharField (max_length=100, verbose_name=_("sales expert name"), blank=True, null=True)
 
     product_type = models.ForeignKey(
     ProductType,
@@ -237,6 +550,18 @@ class CargoAnnouncement (models.Model):
     related_name='CargoAnnouncement'
     )
 
+    transaction_type = models.ForeignKey(
+    TransactionType,
+    on_delete=models.PROTECT,
+    null=True,
+    blank=True,
+    verbose_name = _("Transaction Type"),
+    related_name='CargoAnnouncement'
+    )
+
+    product_price = models.IntegerField(verbose_name=_("product price"), blank=True, null=True)
+
+    description = models.TextField(verbose_name=_("description"), blank=True, null=True)
 
 
     class Meta:
@@ -245,6 +570,6 @@ class CargoAnnouncement (models.Model):
 
     def __str__(self):
         if self.load_type == self.LoadType.COMPANY and self.name_company:
-            return f"{self.name_company} ({self.name_ceo} → {self.number_ceo})"
+            return f"{self.name_company} {self.name_ceo} {self.number_ceo}"
         else:
             return f"{self.full_name} {self.number}"
