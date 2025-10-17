@@ -21,6 +21,7 @@ from django.conf import settings
 urlpatterns = [
     path('', include('app.accounts.urls')),
     path('admin/', admin.site.urls),
+    path('crm/', include('app.crm.urls')),
 ]
 
 if settings.SHOW_DEBUGGER_TOOLBAR:
