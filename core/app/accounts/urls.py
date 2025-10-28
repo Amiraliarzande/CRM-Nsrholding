@@ -1,5 +1,6 @@
-from django.urls import path
-from app.accounts import views
+from django.urls import path, include
+from django.conf import settings
+
 urlpatterns = [
-    path('', views.home, name='home'),
+    path('api/v1/', include('app.accounts.api.v1.urls')),
 ]

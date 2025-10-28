@@ -16,7 +16,7 @@ class CustomUserAdmin(UserAdmin):
     search_fields = ("phone_number", "first_name", "last_name")
     ordering = ("-id",)
 
-    # ✅ این خط رو اضافه کن
+    
     readonly_fields = ("created_date", "updated_date", "last_login")
 
     fieldsets = (
