@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <main class="main">
+    <!-- Page Title -->
+    <div class="page-title light-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0">News</h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li>
+              <a href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="current">News</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <!-- End Page Title -->
+
+    <!-- Room Details Section -->
+    <section id="room-details" class="room-details section">
+      <div class="container" data-aos="fade-up" data-aos-delay="50">
+        <!-- Room Header with Image and Basic Info -->
+        <div class="row align-items-center mb-5">
+          <div class="col-lg-7" data-aos="fade-right" data-aos-delay="50">
+            <div class="room-header-image">
+              <img src="{% if news.image %}
+                  {{ news.image.url }}
+                {% else %}
+                  {% static 'assets/img/DefaultImg/DefaultNews.png' %}
+                {% endif %}"
+                alt="Deluxe Ocean View Suite"
+                class="img-fluid rounded" />
+              <div class="room-badge">
+                <span class="text-white">Premium Suite</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-5" data-aos="fade-left" data-aos-delay="50">
+            <div class="room-header-content">
+              <h1 class="room-title">{{ news.title }}</h1>
+              <p class="room-tagline">{{ news.content }}</p>
+              <div class="room-capacity mb-4">
+                <div class="capacity-item">
+                  <i class="bi bi-tag-fill"></i>
+                  <span>{{ news.tags }}</span>
+                </div>
+                <div class="capacity-item">
+                  <i class="bi bi-calendar3"></i>
+                  <span>{{ news.published_date|date:'d/m/Y' }}</span>
+                </div>
+                <div class="capacity-item">
+                  <i class="bi bi-person-fill"></i>
+                  <span>{{ news.author }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+{% endblock %}
