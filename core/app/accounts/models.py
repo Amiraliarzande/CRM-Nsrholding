@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
-
+from django_jalali.db import models as jmodels
 from app.accounts.validators import validate_iranian_cellphone_number
 
 
@@ -40,7 +40,7 @@ class UserManager(BaseUserManager):
         Create and save a SuperUser with the given phone number and password.
         """
         extra_fields.setdefault("is_staff", True)
-        extra_fields.setdefault("is_superuser", True)  # دقت کن اینجا هم باید lowercase باشه
+        extra_fields.setdefault("is_superuser", True)  
         extra_fields.setdefault("is_active", True)
         extra_fields.setdefault("is_verified", True)
         extra_fields.setdefault("type", UserType.SUPERUSER.value)
@@ -67,12 +67,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         choices=UserType.choices, default=UserType.KARSHENAS_FOROOSH.value
     )
 
-    created_date = models.DateTimeField(auto_now_add=True)
-    updated_date = models.DateTimeField(auto_now=True)
+    created_date = jmodels.jDateField(auto_now_add=True,blank=True,null=True)
+    updated_date = jmodels.jDateField(auto_now=True,blank=True,null=True)
 
     USERNAME_FIELD = "phone_number"
-    REQUIRED_FIELDS = []  # چون فقط شماره موبایل می‌خوایم نیازی به فیلد اضافی نیست
-
+    REQUIRED_FIELDS = []  
     objects = UserManager()
 
     def __str__(self):

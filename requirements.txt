@@ -1,9 +1,18 @@
+
 # main modules
 Django>4.2,<4.3
 django-debug-toolbar==4.2.0
 pillow
 requests
 
+# To convert solar date to Gregorian date
+django-jalali
+django-jalali-date
+
+# For API documentation
+drf-yasg[validation]
+
+openpyxl
 
 # seo
 django-robots
