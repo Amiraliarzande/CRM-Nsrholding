@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import News
+from .models import News, PurchaseLivestock
 
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
@@ -29,3 +29,24 @@ class NewsAdmin(admin.ModelAdmin):
 
     def __str__(self):
         return self.title
+    
+@admin.register(PurchaseLivestock)
+class PurchaseLivestockAdmin(admin.ModelAdmin):
+    list_display = ('product_name', 'product_price', 'published_date')
+    list_filter = ('published_date',)
+    search_fields = ('product_name',)
+    ordering = ('-published_date',)
+    date_hierarchy = 'published_date'
+    list_per_page = 20  
+
+    fieldsets = (
+        ('اطلاعات کالا', {
+            'fields': ('product_name', 'product_price','product_photo')
+        }),
+        ('زمان انتشار', {
+            'fields': ('published_date',)
+        }),
+    )
+
+    def __str__(self):
+        return self.product_name

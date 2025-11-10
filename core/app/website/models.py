@@ -18,3 +18,15 @@ class News(models.Model):
 
     def __str__(self):
         return self.title
+    
+class PurchaseLivestock (models.Model):
+    product_name = models.CharField(max_length=100, verbose_name="نام کالا")
+    product_price = models.IntegerField(verbose_name="قیمت کالا")
+    published_date = models.DateField(default=timezone.now, verbose_name="تاریخ انتشار")
+    product_photo = models.ImageField(verbose_name="عکس کالا",null=True,blank=True)
+    class Meta:
+        verbose_name = "کالا"
+        verbose_name_plural = "کالا نهاد های دام"
+
+    def __str__(self):
+        return self.product_name
