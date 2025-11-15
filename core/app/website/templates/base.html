@@ -69,32 +69,27 @@
           <ul>
             <li><a href="{% url 'home' %}" class="active">صفحه خانه</a></li>
             <li><a href="about.html">About</a></li>
-            <li><a href="rooms.html">Rooms</a></li>
             <li><a href="{% url 'news_list' %}">پایگاه خبری</a></li>
-            <li><a href="location.html">Location</a></li>
+            <li><a href="{% url 'investment' %}">سرمایه گذاری</a></li>
             <li class="dropdown"><a href="#"><span>بازرگانی</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
               <ul>
                   <li><a href="{% url 'purchase_livestock' %}">خرید و فروش نهاد های دامی</a></li>
                   <li><a href="{% url 'organic_products' %}">محصولات ارگانیک</a></li>
               </ul>
             </li>
-            <li class="dropdown"><a href="#"><span>Events</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <li class="dropdown"><a href="#"><span>پروژه ها</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
               <ul>
-                  <li><a href="{% url 'organic_products' %}">Livestock poultry and aquatic feed</a></li>
+                  <li><a href="{% url 'animal_feed_khoshab' %}">خوراک دام خوشاب</a></li>
+                  <li><a href="{% url 'mother_chicken_farm' %}">مزرعه مرغ مادر</a></li>
+                  <li><a href="{% url 'iaying_hen' %}">مجموعه مرغ تخم گذار</a></li>
+                  <li><a href="{% url 'supplying_livestock' %}">تامین نهاد های دامی</a></li>
+                  <li><a href="{% url 'animal_refinery' %}">پالایشگاه دام</a></li>
+                  <li><a href="{% url 'plant_refinery' %}">پالایشگاه گیاهان دارویی</a></li>
               </ul>
             </li>
-            <li class="dropdown"><a href="#"><span>Pages</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <li class="dropdown"><a href="#"><span>رویداد ها</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
               <ul>
-                <li><a href="room-details.html">Room Details</a></li>
-                <li><a href="restaurant.html">Restaurant</a></li>
-                <li><a href="offers.html">Offers</a></li>
-                <li><a href="events.html">Events</a></li>
-                <li><a href="gallery.html">Gallery</a></li>
-                <li><a href="booking.html">Booking</a></li>
-                <li><a href="terms.html">Terms Page</a></li>
-                <li><a href="privacy.html">Privacy Page</a></li>
-                <li><a href="404.html">404 Page</a></li>
-                <li><a href="starter-page.html">Starter Page</a></li>
+                  <li><a href="{% url 'animal_feed' %}">خوراک دام و طیور و آبزیان</a></li>
               </ul>
             </li>
             <li><a href="{% url 'contact' %}">تماس با ما</a></li>

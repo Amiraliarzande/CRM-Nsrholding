@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 
-from .models import News, PurchaseLivestock, OrganicProducts
+from .models import (News, PurchaseLivestock, OrganicProducts, AnimalFeedKhoshab,
+                      MotherChickenFarm, layingHen, SupplyingLivestock, AnimalRefinery,PlantRefinery)
 
 # Create your views here.
 
@@ -19,6 +20,60 @@ def location_view(request):
 
 def rooms_view(request):
     return render(request, 'rooms.html')
+
+def animal_feed_view(request):
+    return render(request, 'animal_feed.html')
+
+def investment_view(request):
+    return render(request, 'investment.html')
+
+def animal_feed_khoshab_view(request):
+    animal_feed_khoshab = AnimalFeedKhoshab.objects.all().order_by('-published_date')
+    context = {
+        'animal_feed_khoshab' : animal_feed_khoshab
+    }
+
+    return render(request, 'animal_feed_khoshab.html', context)
+
+def mother_chicken_farm_view(request):
+    mother_chicken_farm = MotherChickenFarm.objects.all().order_by('-published_date')
+    context = {
+        'mother_chicken_farm' : mother_chicken_farm
+    }
+
+    return render(request, 'mother_chicken_farm.html', context)
+
+def iaying_hen_view(request):
+    iaying_hen = layingHen.objects.all().order_by('-published_date')
+    context = {
+        'iaying_hen' : iaying_hen
+    }
+
+    return render(request, 'iaying_hen.html', context)
+
+def supplying_livestock_view(request):
+    supplying_livestock  = SupplyingLivestock.objects.all().order_by('-published_date')
+    context = {
+        'supplying_livestock' : supplying_livestock
+    }
+
+    return render(request, 'supplying_livestock.html', context)
+
+def animal_refinery_view(request):
+    animal_refinery  = AnimalRefinery.objects.all().order_by('-published_date')
+    context = {
+        'animal_refinery' : animal_refinery
+    }
+
+    return render(request, 'animal_refinery.html', context)
+
+def plant_refinery_view(request):
+    plant_refinery  = PlantRefinery.objects.all().order_by('-published_date')
+    context = {
+        'plant_refinery' : plant_refinery
+    }
+
+    return render(request, 'plant_refinery.html', context)
 
 def organic_products_view(request):
     organic_products_list = OrganicProducts.objects.all().order_by('-published_date')

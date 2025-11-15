@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title light-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0">تامین نهاد های دامی</h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="{% url "home" %}">صفحه خانه</a></li>
+            <li class="current">تامین نهاد های دامی</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Offers Section -->
+    <section id="offers" class="offers section">
+      <h1 style="text-align: center;  padding: 20px 0; margin-bottom: 40px;">تامین و عرضه نهادهای دامی
+</h1>
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row gy-4">
+          {% for obj in supplying_livestock %}
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="offer-card">
+              <div class="offer-image">
+                <img src="{{ obj.image.url }}" alt="Special Offer" class="img-fluid">
+              </div>
+              <div class="offer-content rtl">
+                <h3>{{ obj.title }}</h3>
+                <p>{{ obj.description }}</p>
+              </div>
+            </div><!-- End Offer Card -->
+          </div>
+          {% endfor %}
+        </div>
+
+      </div>
+
+    </section><!-- /Offers Section -->
+
+  </main>
+{% endblock %}

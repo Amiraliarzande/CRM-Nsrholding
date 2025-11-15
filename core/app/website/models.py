@@ -45,3 +45,76 @@ class OrganicProducts (models.Model):
 
     def __str__(self):
         return self.product_name
+    
+class AnimalFeedKhoshab (models.Model):
+    image = models.ImageField(verbose_name="عکس",default='Default/DefaultImg.png',null=True,blank=True)
+    title = models.CharField(max_length=100, verbose_name='عنوان')
+    description = models.TextField(verbose_name="عنوان")
+    published_date = models.DateField(default=timezone.now)
+    
+    class Meta:
+        verbose_name = "خوراک دام خوشاب"
+
+    def __str__(self):
+        return self.description
+
+class MotherChickenFarm (models.Model):
+    image = models.ImageField(verbose_name="عکس",default='Default/DefaultImg.png',null=True,blank=True)
+    title = models.CharField(max_length=100, verbose_name='عنوان')
+    description = models.TextField(verbose_name="عنوان")
+    published_date = models.DateField(default=timezone.now)
+    
+    class Meta:
+        verbose_name = "مزرعه مرغ مادر"
+
+    def __str__(self):
+        return self.description
+    
+class layingHen (models.Model):
+    image = models.ImageField(verbose_name="عکس",default='Default/DefaultImg.png',null=True,blank=True)
+    title = models.CharField(max_length=100, verbose_name='عنوان')
+    description = models.TextField(verbose_name="عنوان")
+    published_date = models.DateField(default=timezone.now)
+    
+    class Meta:
+        verbose_name = "مجموعه مرغ تخم گذار"
+
+    def __str__(self):
+        return self.description
+    
+class SupplyingLivestock (models.Model):
+    image = models.ImageField(verbose_name="عکس",default='Default/DefaultImg.png',null=True,blank=True)
+    title = models.CharField(max_length=100, verbose_name='عنوان')
+    description = models.TextField(verbose_name="عنوان")
+    published_date = models.DateField(default=timezone.now)
+    
+    class Meta:
+        verbose_name = "تامبن نهاد های دامی"
+
+    def __str__(self):
+        return self.description
+    
+    
+class AnimalRefinery (models.Model):
+    image = models.ImageField(verbose_name="عکس",default='Default/DefaultImg.png',null=True,blank=True)
+    title = models.CharField(max_length=100, verbose_name='عنوان')
+    description = models.TextField(verbose_name="عنوان")
+    published_date = models.DateField(default=timezone.now)
+    
+    class Meta:
+        verbose_name = "پالیشگاه دام"
+
+    def __str__(self):
+        return self.description
+    
+class PlantRefinery (models.Model):
+    image = models.ImageField(verbose_name="عکس",default='Default/DefaultImg.png',null=True,blank=True)
+    title = models.CharField(max_length=100, verbose_name='عنوان')
+    description = models.TextField(verbose_name="عنوان")
+    published_date = models.DateField(default=timezone.now)
+    
+    class Meta:
+        verbose_name = "پالیشگاه گیاهان دارویی"
+
+    def __str__(self):
+        return self.description

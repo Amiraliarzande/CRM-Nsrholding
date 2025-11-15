@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title light-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0">خوراک دام و طیور و آبزیان</h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="{% url 'home' %}">صفحه خانه</a></li>
+            <li class="current">خوراک دام و طیور و آبزیان</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Privacy Section -->
+    <section id="privacy" class="privacy section">
+
+      <div class="row gy-4 align-items-center" style="margin: 1px 40px 60px 40px;">
+
+          <div class="col-lg-6" data-aos="fade-right" data-aos-delay="200">
+            <div class="hero-content rtl">
+              <h4>بزرگترین رویداد دانش بنیان در حوزه</h4>
+              <h1 style="color: #2a423c;">خوراک دام و طیور و آبزیان</h1>
+              <p class="lead">شرکت راه ابریشم نو مفتخر است که بزرگترین ایونت دانش بنیان در حوزه خوراک دام و طیور و آبزیان را در تابستان سال 1403 برگزار نماید</p>
+              <p class="lead">​​​​​​​این رویداد با هدف حمایت از ایده های نوآورانه و خلاقانه در این حوزه و همچنین ایجاد فرصتی برای تبادل نظر و تجربیات بین اساتید، دانشجویان و افراد صاحب نظر در این زمینه برگزار خواهد شد</p>
+            </div>
+          </div>
+
+          <div class="col-lg-6" data-aos="fade-left" data-aos-delay="300">
+            <div class="hero-images">
+              <div class="main-image">
+                <img src="{% static 'assets/img/hotel/showcase-3.webp' %}" alt="Luxury Hotel" class="img-fluid">
+              </div>
+            </div>
+          </div>
+        </div>
+      <div class="container" data-aos="fade-up">
+        <!-- Main Content -->
+        <div class="privacy-content rtl" data-aos="fade-up">
+          <!-- Introduction -->
+          <div class="content-section">
+            <h4>محورهای اصلی این رویداد</h4>
+            <ul>
+              <li>توسعه و نوآوری در فرمولاسیون خوراک دام و طیور و آبزیان</li>
+              <li>استفاده از مواد اولیه بومی و جایگزینی نهاده های وارداتی</li>
+              <li>افزایش راندمان تولید و کاهش ضایعات</li>
+              <li>بهبود سلامت و بهداشت دام و طیور و آبزیان</li>
+              <li>ایجاد اشتغال و رونق اقتصادی در این حوزه</li>
+            </ul>
+          </div>
+
+          <!-- Information Collection -->
+          <div class="content-section">
+
+            <h4>شرایط شرکت در رویداد</h4>
+            <p>تمامی اساتید، دانشجویان و افراد دارای تجربه در حوزه خوراک دام و طیور و آبزیان می توانند در این رویداد شرکت کنند</p>
+            <p>شرکت کنندگان باید پروژه های دانش بنیان خود در این حوزه را با توضیحات مختصر برای دبیرخانه این رویداد ارسال نمایند</p>
+            <p>مهلت و نحوه ارسال پروژه ها بزودی اطلاع رسانی خواهد شد</p>
+            <br>
+            <h4>جوایز رویداد</h4>
+            <ul>
+              <li>به برگزیدگان این رویداد جوایز نفیسی اهدا خواهد شد</li>
+              <li>با برگزیدگان این رویداد برای تجاری سازی پروژه ها قرارداد همکاری بسته خواهد شد</li>
+            </ul>
+            <br>
+            <br>
+            <p>این رویداد فرصتی عالی برای معرفی ایده های نوآورانه و خلاقانه و ایجاد ارتباط با افراد صاحب نظر و متخصص در این حوزه جهت یافتن سرمایه گذار برای تجاری سازی پروژه ها و اشتغال و کارآفرینی در این حوزه است</p>
+            <p>با حضور شما در این رویداد، شاهد گامی بزرگ در جهت توسعه و پیشرفت صنعت خوراک دام و طیور و آبزیان در کشور خواهیم بود</p>
+
+        </div>
+      </div>
+
+    </section><!-- /Privacy Section -->
+
+  </main>
+
+ {% endblock %}
