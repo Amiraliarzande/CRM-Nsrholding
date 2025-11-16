@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import (News, PurchaseLivestock, OrganicProducts,
-                        AnimalFeedKhoshab, MotherChickenFarm, layingHen, SupplyingLivestock, AnimalRefinery, PlantRefinery)
+                        AnimalFeedKhoshab, MotherChickenFarm, layingHen,
+                          SupplyingLivestock, AnimalRefinery, PlantRefinery,Contact)
 
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
@@ -157,5 +158,21 @@ class PlantRefineryAdmin(admin.ModelAdmin):
         }),
         ('زمان انتشار', {
             'fields': ('published_date',)
+        }),
+    )
+
+@admin.register(Contact)
+class ContactAdmin (admin.ModelAdmin):
+    list_display = ('full_name', 'email','number','message')
+    list_filter = ('email','full_name')
+    readonly_fields = ('crate_deta',)
+    ordering = ('-crate_deta',)
+
+    fieldsets = (
+        ('مشخصات', {
+            'fields': ('full_name','email', 'number','message')
+        }),
+        ('زمان انتشار', {
+            'fields': ('crate_deta',)
         }),
     )

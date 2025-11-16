@@ -118,3 +118,16 @@ class PlantRefinery (models.Model):
 
     def __str__(self):
         return self.description
+    
+class Contact (models.Model):
+    full_name = models.CharField(max_length=100, verbose_name="نام و نام خانوادگی")
+    email = models.EmailField(verbose_name="ایمیل")
+    number = models.CharField(verbose_name="شماره موبایل",max_length=11)
+    message = models.TextField(verbose_name="پیام")
+    crate_deta = models.DateField(auto_now_add=True,verbose_name="زمان ارسال")
+
+    class Meta:
+        verbose_name = "تماس با ما"
+    
+    def __str__(self):
+        return self.full_name

@@ -1,6 +1,13 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
-
+from django.shortcuts import render
+from django.contrib import messages
+from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.shortcuts import redirect
+from core.settings import EMAIL_HOST_USER
+from .forms import ContactForm
 from .models import (News, PurchaseLivestock, OrganicProducts, AnimalFeedKhoshab,
                       MotherChickenFarm, layingHen, SupplyingLivestock, AnimalRefinery,PlantRefinery)
 
@@ -13,7 +20,41 @@ def about_view(request):
     return render(request, 'about.html')
 
 def contact_view(request):
-    return render(request, 'contact.html')
+    if request.method == "POST":
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.save()  
+            try:
+                html_content = render_to_string("contact_email.html", {
+                    "full_name": instance.full_name,
+                    "email": instance.email,
+                    "number": instance.number,
+                    "message": instance.message,
+                })
+
+                email = EmailMultiAlternatives(
+                    subject="پیام جدید از فرم تماس سایت",
+                    body="یک پیام جدید دریافت شد.",
+                    from_email=None,
+                    to=[EMAIL_HOST_USER],
+                )
+                email.attach_alternative(html_content, "text/html")
+                email.send()
+
+                messages.success(request, "پیام شما با موفقیت ارسال شد!")
+                
+            except Exception as e:
+                messages.error(request, f"ارسال ایمیل با خطا مواجه شد: {e}")
+
+            return redirect('contact')
+
+        else:
+            messages.error(request, "فرم به درستی ارسال نشد. لطفاً دوباره تلاش کنید.")
+    else:
+        form = ContactForm()
+
+    return render(request, "contact.html", {"form": form})
 
 def location_view(request):
     return render(request, 'location.html')
