@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title light-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0">سرمایه گذاری</h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="{% url 'home' %}">صفحه خانه</a></li>
+            <li class="current">سرمایه گذاری</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact section">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <!-- Contact Form -->
+        <div class="row justify-content-center mb-5" data-aos="fade-up" data-aos-delay="200">
+          <div class="col-lg-10">
+            <div class="contact-form-wrapper">
+              <h2 class="text-center mb-4">سرمایه گذاری</h2>
+              <div class="contact-box">
+                <p>برای سرمایه گذاری در پروژه های مختلف شرکت راه ابریشم نو، فرم زیر را تکمیل نمایید</p>
+                <p>همکاران ما در اسرع وقت برای مشاوره و راهنمایی با شما تماس خواهند گرفت</p>
+              </div>
+              <form action="forms/contact.php" method="post" class="php-email-form">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <input type="text" class="form-control" name="name" placeholder="نام و نام خانوادگی" required="">
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <input type="number" class="form-control" name="number" placeholder="شماره تماس" required="">
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <input type="email" class="form-control" name="email" placeholder="ایمیل" required="">
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <input type="text" class="form-control" name="city" placeholder="شهر" required="">
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <select class="form-control custom-select" name="job" required>
+                        <option value="" selected disabled>شغل شما چیست؟</option>
+                        <option value="آزاد">آزاد</option>
+                        <option value="بیکار">بیکار</option>
+                        <option value="کارمند">کارمند</option>
+                        <option value="بازنشسته">بازنشسته</option>
+                        <option value="دیگر مشاغل">دیگر مشاغل</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <div class="form-group select-wrapper">
+                      <select class="form-control custom-select" name="capital" required>
+                        <option value="" selected disabled>میزان سرمایه شما چقدر است؟</option>
+                        <option value="کمتر از 200 میلیون تومان">کمتر از 200 میلیون تومان</option>
+                        <option value="بین 200 تا 500 میلیون تومان">بین 200 تا 500 میلیون تومان</option>
+                        <option value="بین 500 میلیون تومان تا یک میلیارد تومان">بین 500 میلیون تومان تا یک میلیارد تومان</option>
+                        <option value="بیشتر از یک میلیارد تومان">بیشتر از یک میلیارد تومان</option>
+                      </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  
+                  <div class="col-12">
+                    <div class="form-group">
+                      <textarea class="form-control" name="message" placeholder="نظرات" rows="6" required=""></textarea>
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <div class="loading">Loading</div>
+                    <div class="error-message"></div>
+                    <div class="sent-message">Your message has been sent. Thank you!</div>
+                  </div>
+
+                  <div class="col-12 text-center">
+                    <button type="submit" class="btn-submit">ثبت درخواست</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- /Contact Section -->
+
+  </main>
+{% endblock %}
