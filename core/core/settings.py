@@ -145,13 +145,15 @@ SMSLINENUMBER = "30004007672729"
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = "/home/nsrholdi/public_html/static"
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
+
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, "static"),
+# ]
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'app/website/media')
+MEDIA_ROOT = "/home/nsrholdi/public_html/media"
 
 
 # Default primary key field type
